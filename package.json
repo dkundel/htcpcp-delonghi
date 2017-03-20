@@ -4,6 +4,8 @@
   "description": "Tessel project",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "npm run build && t2 run out/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "www.github.com/tessel/t2-cli",
@@ -13,7 +15,11 @@
   "license": "MIT",
   "readme": "A bare bones Tessel 2 blinky script.",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "johnny-five": "^0.10.6",
-    "tessel-io": "^0.10.1"
+    "localtunnel": "^1.8.2",
+    "raw-body": "^2.2.0",
+    "tessel-io": "^0.10.1",
+    "typescript": "^2.2.1"
   }
 }

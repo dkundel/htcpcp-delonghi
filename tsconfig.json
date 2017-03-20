@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "out",
+    "allowJs": true,
+    "target": "es5"
+  },
+  "files": [
+    "latissima.js",
+    "index.js"
+  ]
+}
