@@ -4,6 +4,7 @@ var localtunnel = require('localtunnel');
 var Latissima = require('./latissima').Latissima;
 var server = http.createServer(handleRequests);
 var PORT = process.env.PORT || 3000;
+var TOKEN = 'r87c8wau3xsjy9vv6h9k65hfr';
 var coffeeMachine;
 server.listen(PORT, function () {
     console.log("Server running on port " + PORT);
@@ -22,7 +23,6 @@ server.listen(PORT, function () {
     });
 });
 function handleRequests(req, res) {
-    console.log(req);
     if (coffeeMachine.isTeapot) {
         res.statusCode = 418;
         res.statusMessage = "I'm a teapot";
@@ -55,9 +55,13 @@ function handleRequests(req, res) {
             res.statusCode = 415;
             res.statusMessage = 'Unsupported Media Type';
             res.end();
+            return;
         }
-        function isValidAddition(addition) {
-            return coffeeMachine.additions.indexOf(addition) !== -1;
+        if (!isAuthenticated(req)) {
+            res.statusCode = 401;
+            res.statusMessage = 'Unauthorized';
+            res.end();
+            return;
         }
         var additions = getAdditionsRequested(req);
         var invalidAdditions = additions.filter(function (a) { return !isValidAddition(a); });
@@ -96,30 +100,38 @@ function handleRequests(req, res) {
                     return res.end();
                 }
             }
-            var typeEndpoint = req.url.replace('/pot-0/', '');
-            // TODO: No difference at the moment between start and stop
-            // TODO: Need to handle additions
-            if (Latissima.Types[typeEndpoint]) {
-                coffeeMachine.press(Latissima.Types[typeEndpoint])
-                    .then(function () {
-                    res.statusCode = 200;
-                    res.write(command + 'ed');
-                    return res.end();
-                });
-            }
             else {
-                res.statusCode = 404;
-                res.statusMessage = 'Not Found';
-                return res.end();
+                var typeEndpoint = req.url.replace('/pot-0/', '');
+                // TODO: No difference at the moment between start and stop
+                // TODO: Need to handle additions
+                if (Latissima.Types[typeEndpoint]) {
+                    coffeeMachine.press(Latissima.Types[typeEndpoint])
+                        .then(function () {
+                        res.statusCode = 200;
+                        res.write(command + 'ed');
+                        return res.end();
+                    });
+                }
+                else {
+                    res.statusCode = 404;
+                    res.statusMessage = 'Not Found';
+                    return res.end();
+                }
             }
         });
     }
 }
+function isAuthenticated(req) {
+    return req.headers['coffee-authorization'].replace('Bearer ', '') === TOKEN;
+}
 function hasCorrectContentType(req) {
     return req.headers['content-type'] === 'application/coffee-pot-command';
 }
+function isValidAddition(addition) {
+    return coffeeMachine.additions.indexOf(addition) !== -1;
+}
 function getAdditionsRequested(req) {
-    var header = req.rawHeaders['Accept-Additions'];
+    var header = req.headers['accept-additions'];
     var milkType = ['Cream', 'Half-and-half', 'Whole-milk', 'Part-Skim', 'Skim', 'Non-Dairy'];
     var syrupType = ['Vanilla', 'Almond', 'Raspberry', 'Chocolate'];
     var alcoholType = ['Whisky', 'Rum', 'Kahlua', 'Aquavit'];

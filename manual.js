@@ -1,19 +1,19 @@
-var five = require('johnny-five');
-var Tessel = require('tessel-io');
-var board = new five.Board({
+const five = require('johnny-five');
+const Tessel = require('tessel-io');
+const board = new five.Board({
   io: new Tessel()
 });
 
-board.on('ready', function () {
-  var espresso = new five.Relay({
+board.on('ready', () => {
+  const espresso = new five.Relay({
     pin: 'a4',
     type: 'NO'
   });
-  var grande = new five.Relay({
+  const grande = new five.Relay({
     pin: 'a5',
     type: 'NO'
   });
-  var power = new five.Relay({
+  const power = new five.Relay({
     pin: 'a6',
     type: 'NO'
   });

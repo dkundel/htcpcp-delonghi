@@ -75,7 +75,7 @@ class Latissima extends EventEmittter {
         this.isOn = true;
       }, 21 * 1000)
     } else {
-      this.isOn = true;
+      this.isOn = false;
     }
 
     return this.pressButton(this.powerRelay);

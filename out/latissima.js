@@ -71,7 +71,7 @@ var Latissima = (function (_super) {
             }, 21 * 1000);
         }
         else {
-            this.isOn = true;
+            this.isOn = false;
         }
         return this.pressButton(this.powerRelay);
     };
