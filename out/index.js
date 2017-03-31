@@ -2,14 +2,13 @@ var http = require('http');
 var getRawBody = require('raw-body');
 var localtunnel = require('localtunnel');
 var url = require('url');
+var _a = require('./config'), PORT = _a.PORT, TOKEN = _a.TOKEN, SUBDOMAIN = _a.SUBDOMAIN;
 var Latissima = require('./latissima').Latissima;
 var server = http.createServer(handleRequests);
-var PORT = process.env.PORT || 3000;
-var TOKEN = 'r87c8wau3xsjy9vv6h9k65hfr';
 var coffeeMachine;
 server.listen(PORT, function () {
     console.log("Server running on port " + PORT);
-    localtunnel(PORT, { subdomain: 'latissima' }, function (err, tunnel) {
+    localtunnel(PORT, { subdomain: SUBDOMAIN }, function (err, tunnel) {
         if (err) {
             console.error(err);
             process.exit(1);

@@ -18,17 +18,18 @@ var Latissima = (function (_super) {
     function Latissima(debug) {
         if (debug === void 0) { debug = false; }
         var _this = _super.call(this) || this;
-        /* Board */
+        // Board
         _this.board = undefined;
-        /* Relays */
+        // Relays
         _this.espressoRelay = undefined;
         _this.grandeRelay = undefined;
         _this.powerRelay = undefined;
-        /* Digital Pins */
-        /* Others */
+        // Others
+        // The coffee machine is automatically on when you flip the master switch
         _this.isOn = true;
+        // No this isn't a teapot
         _this.isTeapot = false;
-        /* Available Additions */
+        // Available Additions
         _this.additions = [];
         _this.board = new Board({
             io: new Tessel(),
@@ -37,13 +38,10 @@ var Latissima = (function (_super) {
         });
         _this.board.on('ready', function () {
             _this.initializePins();
-            _this.addBoardEvents();
             _this.emit('ready');
         });
         return _this;
     }
-    Latissima.prototype.addBoardEvents = function () {
-    };
     Latissima.prototype.initializePins = function () {
         this.espressoRelay = new Relay({
             pin: 'a4',
@@ -75,6 +73,7 @@ var Latissima = (function (_super) {
         }
         return this.pressButton(this.powerRelay);
     };
+    // Convinience function to press different coffee types
     Latissima.prototype.press = function (type) {
         switch (type) {
             case Latissima.Types.espresso:
@@ -85,6 +84,9 @@ var Latissima = (function (_super) {
                 return Promise.reject(new Error("Could not find Type"));
         }
     };
+    // Emulate the push of a button by opening
+    // the respective relay, wait for a certain
+    // time and closing it again
     Latissima.prototype.pressButton = function (relay) {
         return new Promise(function (resolve, reject) {
             relay.open();
@@ -96,7 +98,7 @@ var Latissima = (function (_super) {
     };
     return Latissima;
 }(EventEmittter));
-/* Coffee Types */
+// Coffee Types
 Latissima.Types = {
     espresso: 1,
     grande: 2
