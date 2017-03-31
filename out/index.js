@@ -1,6 +1,7 @@
 var http = require('http');
 var getRawBody = require('raw-body');
 var localtunnel = require('localtunnel');
+var url = require('url');
 var Latissima = require('./latissima').Latissima;
 var server = http.createServer(handleRequests);
 var PORT = process.env.PORT || 3000;
@@ -101,12 +102,15 @@ function handleRequests(req, res) {
                 }
             }
             else {
-                var typeEndpoint = req.url.replace('/pot-0/', '');
+                var typeEndpoint = url.parse(req.url).pathname.replace('/pot-0/', '');
                 // TODO: No difference at the moment between start and stop
                 // TODO: Need to handle additions
+                console.log('Pressing', typeEndpoint);
                 if (Latissima.Types[typeEndpoint]) {
+                    console.log('Pressing');
                     coffeeMachine.press(Latissima.Types[typeEndpoint])
                         .then(function () {
+                        console.log('Pressed');
                         res.statusCode = 200;
                         res.write(command + 'ed');
                         return res.end();
@@ -122,10 +126,16 @@ function handleRequests(req, res) {
     }
 }
 function isAuthenticated(req) {
-    return req.headers['coffee-authorization'].replace('Bearer ', '') === TOKEN;
+    var query = url.parse(req.url, true).query;
+    console.log(query);
+    if (query.token && query.token === TOKEN) {
+        return true;
+    }
+    return (req.headers['coffee-authorization'] || '').replace('Bearer ', '') === TOKEN;
 }
 function hasCorrectContentType(req) {
-    return req.headers['content-type'] === 'application/coffee-pot-command';
+    return req.headers['content-type'] === 'application/coffee-pot-command'
+        || req.headers['content-type'] === 'text/plain';
 }
 function isValidAddition(addition) {
     return coffeeMachine.additions.indexOf(addition) !== -1;

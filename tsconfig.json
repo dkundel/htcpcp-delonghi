@@ -6,6 +6,7 @@
   },
   "files": [
     "latissima.js",
-    "index.js"
+    "index.js",
+    "config.js"
   ]
 }

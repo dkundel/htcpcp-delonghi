@@ -1,18 +1,18 @@
 const http = require('http');
 const getRawBody = require('raw-body');
 const localtunnel = require('localtunnel');
+const url = require('url');
 
+const { PORT, TOKEN, SUBDOMAIN } = require('./config');
 const { Latissima } = require('./latissima');
 
 const server = http.createServer(handleRequests);
-const PORT = process.env.PORT || 3000;
-const TOKEN = 'r87c8wau3xsjy9vv6h9k65hfr';
 
 let coffeeMachine;
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  localtunnel(PORT, {subdomain: 'latissima'}, function(err, tunnel) {
+  localtunnel(PORT, {subdomain: SUBDOMAIN}, function(err, tunnel) {
     if (err) {
       console.error(err);
       process.exit(1);
@@ -111,13 +111,16 @@ function handleRequests(req, res) {
           return res.end();
         }
       } else {
-        const typeEndpoint = req.url.replace('/pot-0/', '');
+        const typeEndpoint = url.parse(req.url).pathname.replace('/pot-0/', '');
       
         // TODO: No difference at the moment between start and stop
         // TODO: Need to handle additions
+        console.log('Pressing', typeEndpoint);
         if (Latissima.Types[typeEndpoint]) {
+          console.log('Pressing');
           coffeeMachine.press(Latissima.Types[typeEndpoint])
           .then(() => {
+            console.log('Pressed');
             res.statusCode = 200;
             res.write(command+'ed');
             return res.end();
@@ -133,11 +136,17 @@ function handleRequests(req, res) {
 }
 
 function isAuthenticated(req) {
-  return req.headers['coffee-authorization'].replace('Bearer ', '') === TOKEN;
+  const query = url.parse(req.url, true).query;
+  console.log(query);
+  if (query.token && query.token === TOKEN) {
+    return true;
+  }
+  return (req.headers['coffee-authorization'] || '').replace('Bearer ', '') === TOKEN;
 }
 
 function hasCorrectContentType(req) {
-  return req.headers['content-type'] === 'application/coffee-pot-command';
+  return req.headers['content-type'] === 'application/coffee-pot-command'
+    || req.headers['content-type'] ===  'text/plain';
 }
 
 function isValidAddition(addition) {

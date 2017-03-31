@@ -6,29 +6,28 @@ const Tessel = require('tessel-io');
 const PRESS_DURATION = 500;
 
 class Latissima extends EventEmittter {
-  /* Board */
+  // Board
   board = undefined;
 
-  /* Relays */
+  // Relays
   espressoRelay = undefined;
   grandeRelay = undefined;
   powerRelay = undefined;
 
-  /* Digital Pins */
-
-  /* Others */
-  isOn = true;
+  // Others
+  // The coffee machine is automatically on when you flip the master switch
+  isOn = true; 
+  // No this isn't a teapot
   isTeapot = false;
   
-  /* Available Additions */
+  // Available Additions
   additions = [];
 
-  /* Coffee Types */
+  // Coffee Types
   static Types = {
     espresso: 1,
     grande: 2
   };
-
 
   constructor(debug = false) {
     super();
@@ -40,13 +39,8 @@ class Latissima extends EventEmittter {
 
     this.board.on('ready', () => {
       this.initializePins();
-      this.addBoardEvents();
       this.emit('ready');
     });
-  }
-
-  addBoardEvents() {
-
   }
 
   initializePins() {
@@ -81,6 +75,7 @@ class Latissima extends EventEmittter {
     return this.pressButton(this.powerRelay);
   }
 
+  // Convinience function to press different coffee types
   press(type) {
     switch(type) {
       case Latissima.Types.espresso:
@@ -92,6 +87,9 @@ class Latissima extends EventEmittter {
     }
   }
 
+  // Emulate the push of a button by opening
+  // the respective relay, wait for a certain
+  // time and closing it again
   pressButton(relay) {
     return new Promise((resolve, reject) => {
       relay.open();
