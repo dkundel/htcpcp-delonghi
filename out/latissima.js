@@ -13,7 +13,7 @@ var _a = require('johnny-five'), Board = _a.Board, Relay = _a.Relay, Pin = _a.Pi
 var Promise = require('bluebird');
 var Tessel = require('tessel-io');
 var PRESS_DURATION = 500;
-var Latissima = (function (_super) {
+var Latissima = /** @class */ (function (_super) {
     __extends(Latissima, _super);
     function Latissima(debug) {
         if (debug === void 0) { debug = false; }
@@ -96,11 +96,11 @@ var Latissima = (function (_super) {
             }, PRESS_DURATION);
         });
     };
+    // Coffee Types
+    Latissima.Types = {
+        espresso: 1,
+        grande: 2
+    };
     return Latissima;
 }(EventEmittter));
-// Coffee Types
-Latissima.Types = {
-    espresso: 1,
-    grande: 2
-};
 module.exports = { Latissima: Latissima };

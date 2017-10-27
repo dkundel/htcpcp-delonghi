@@ -57,7 +57,7 @@ function handleRequests(req, res) {
 
   if (req.method === 'POST' || req.method === 'BREW') {
     // TODO once we have a proper status we should set this
-    res.setHeader('Safe', 'yes');
+    res.setHeader('Safe', 'no');
     if (!hasCorrectContentType(req)) {
       res.statusCode = 415;
       res.statusMessage = 'Unsupported Media Type';

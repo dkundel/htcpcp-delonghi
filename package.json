@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && t2 run out/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "coffee": "node make-coffee.js"
   },
   "repository": "www.github.com/tessel/t2-cli",
   "keywords": [
@@ -15,7 +16,9 @@
   "license": "MIT",
   "readme": "A bare bones Tessel 2 blinky script.",
   "dependencies": {
+    "@types/node": "^8.0.47",
     "bluebird": "^3.5.0",
+    "got": "^7.1.0",
     "johnny-five": "^0.10.6",
     "localtunnel": "^1.8.2",
     "raw-body": "^2.2.0",
