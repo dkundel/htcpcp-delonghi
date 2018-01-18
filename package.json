@@ -7,7 +7,9 @@
     "build": "tsc",
     "start": "npm run build && t2 run out/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "coffee": "node make-coffee.js"
+    "coffee": "node make-coffee.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": "www.github.com/tessel/t2-cli",
   "keywords": [
@@ -23,6 +25,8 @@
     "localtunnel": "^1.8.2",
     "raw-body": "^2.2.0",
     "tessel-io": "^0.10.1",
-    "typescript": "^2.2.1"
-  }
+    "typescript": "^2.2.1",
+    "snyk": "^1.69.0"
+  },
+  "snyk": true
 }
