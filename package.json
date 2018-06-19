@@ -26,7 +26,7 @@
     "raw-body": "^2.2.0",
     "tessel-io": "^0.10.1",
     "typescript": "^2.2.1",
-    "snyk": "^1.69.0"
+    "snyk": "^1.83.0"
   },
   "snyk": true
 }
