@@ -22,7 +22,7 @@
     "bluebird": "^3.5.0",
     "got": "^7.1.0",
     "johnny-five": "^0.10.6",
-    "localtunnel": "^1.8.2",
+    "localtunnel": "^1.9.0",
     "raw-body": "^2.2.0",
     "tessel-io": "^0.10.1",
     "typescript": "^2.2.1",
