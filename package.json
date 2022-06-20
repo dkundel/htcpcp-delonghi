@@ -20,7 +20,7 @@
   "dependencies": {
     "@types/node": "^8.0.47",
     "bluebird": "^3.5.0",
-    "got": "^7.1.0",
+    "got": "^11.8.5",
     "johnny-five": "^0.10.6",
     "localtunnel": "^1.8.2",
     "raw-body": "^2.2.0",
